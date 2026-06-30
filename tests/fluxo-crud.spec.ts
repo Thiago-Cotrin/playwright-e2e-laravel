@@ -79,7 +79,7 @@ test.describe.serial('Jornada completa de um usuário da Biblioteca', () => {
       await page.goto('/');
 
       for (const nome of ['Bibliotecas', 'Usuários', 'Pessoas', 'Autores', 'Livros']) {
-        await expect(page.getByRole('link', { name: new RegExp(nome, 'i') })).toBeVisible();
+        await expect(page.getByRole('link', { name: nome, exact: true })).toBeVisible();
       }
 
       await abrirListagem(page, '/users', /Criar Novo Usuário/i);
