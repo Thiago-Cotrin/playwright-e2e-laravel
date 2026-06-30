@@ -46,7 +46,7 @@ services:
           "CMD",
           "php",
           "-r",
-          "exit(@file_get_contents('http://127.0.0.1:8000') === false ? 1 : 0);",
+          "exit(@fsockopen('127.0.0.1', 8000) === false ? 1 : 0);",
         ]
       interval: 5s
       timeout: 5s
@@ -68,4 +68,3 @@ services:
 
 volumes:
   mysql-data:
-
