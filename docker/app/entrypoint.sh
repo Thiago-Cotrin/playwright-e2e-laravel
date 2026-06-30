@@ -25,7 +25,10 @@ try {
 done
 
 php artisan config:clear
-php artisan migrate:fresh --seed --force --no-interaction
+php artisan migrate:fresh --force --no-interaction
+php artisan db:seed \
+    --class="Database\\Seeders\\BibliotecaAdminSeeder" \
+    --force \
+    --no-interaction
 
 exec php artisan serve --host=0.0.0.0 --port=8000
-
