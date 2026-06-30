@@ -1,0 +1,71 @@
+name: atividade-e2e-biblioteca
+
+services:
+  database:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: app_biblioteca
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: minhasenha
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build:
+      context: ./docker/app
+      args:
+        APP_COMMIT: e8a10ded520ae3acf9cb5cbcf9c4940e5671659c
+    environment:
+      APP_NAME: Biblioteca E2E
+      APP_ENV: testing
+      APP_DEBUG: "false"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: mysql
+      DB_HOST: database
+      DB_PORT: "3306"
+      DB_DATABASE: app_biblioteca
+      DB_USERNAME: dev
+      DB_PASSWORD: minhasenha
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "php",
+          "-r",
+          "exit(@file_get_contents('http://127.0.0.1:8000') === false ? 1 : 0);",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      BASE_URL: http://app:8000
+      CI: "true"
+    depends_on:
+      app:
+        condition: service_healthy
+    volumes:
+      - ./playwright-report:/tests/playwright-report
+      - ./test-results:/tests/test-results
+
+volumes:
+  mysql-data:
+

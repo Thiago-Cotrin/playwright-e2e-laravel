@@ -1,0 +1,22 @@
+{
+  "name": "atividade-avaliativa-3-testes-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes E2E da aplicação Biblioteca para a Atividade Avaliativa 3.",
+  "scripts": {
+    "test": "playwright test",
+    "test:e2e": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@types/node": "24.3.0",
+    "typescript": "6.0.3",
+    "wait-on": "9.0.10"
+  }
+}
+
