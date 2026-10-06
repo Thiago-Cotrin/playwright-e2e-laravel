@@ -1,11 +1,10 @@
 {
-  "name": "atividade-avaliativa-3-testes-e2e",
+  "name": "playwright-e2e-laravel-library",
   "version": "1.0.0",
   "private": true,
-  "description": "Testes E2E da aplicação Biblioteca para a Atividade Avaliativa 3.",
+  "description": "End-to-end test suite (Playwright + TypeScript) for a Laravel CRUD app, fully containerised with Docker Compose and run on GitHub Actions",
   "scripts": {
     "test": "playwright test",
-    "test:e2e": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
@@ -17,6 +16,10 @@
     "@types/node": "24.3.0",
     "typescript": "6.0.3",
     "wait-on": "9.0.10"
+  },
+  "author": "Thiago Cotrin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Thiago-Cotrin/playwright-e2e-laravel.git"
   }
 }
-

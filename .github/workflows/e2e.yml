@@ -1,34 +1,48 @@
-name: Testes E2E
+name: E2E tests
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  playwright:
+  typecheck:
+    name: Type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+
+  e2e:
+    name: Playwright (Docker Compose)
+    needs: typecheck
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     steps:
-      - name: Baixar o repositório
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Executar aplicação e testes em containers
+      - name: Start MySQL + Laravel and run the tests in containers
         run: docker compose up --build --abort-on-container-exit --exit-code-from tests
 
-      - name: Publicar relatório e evidências
+      - name: Upload HTML report and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: relatorio-playwright
+          name: playwright-report
           path: |
             playwright-report/
             test-results/
           if-no-files-found: warn
 
-      - name: Encerrar containers
+      - name: Stop containers
         if: always()
         run: docker compose down --volumes
-

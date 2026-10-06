@@ -9,7 +9,7 @@ if ! grep -q '^APP_KEY=base64:' .env; then
     php artisan key:generate --force --no-interaction
 fi
 
-echo "Aguardando o banco de dados..."
+echo "Waiting for the database..."
 until php -r '
 try {
     new PDO(

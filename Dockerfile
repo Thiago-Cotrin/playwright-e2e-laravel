@@ -8,5 +8,5 @@ RUN npm ci
 COPY playwright.config.ts tsconfig.json ./
 COPY tests ./tests
 
-CMD ["npm", "run", "test:e2e"]
+CMD ["npm", "test"]
 
